@@ -1,27 +1,28 @@
 {
-	"name": "premid",
-	"productName": "PreMiD",
-	"version": "2.0.0",
-	"repository": "https://github.com/Timeraa/PreMiD",
-	"scripts": {
-		"start": "npm start --prefix src/.",
-		"dev": "npm run dev --prefix src/.",
-		"pkgmac": "electron-packager ./src/ --out=./dist/ --asar --overwrite --icon=./installer_assets/appIcon.ico --osx-sign.identity='Florian Metz'",
-		"pkgwin": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./installer_assets/appIcon.ico",
-		"pkgwin32": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./installer_assets/appIcon.ico --platform=win32 --arch=ia32",
-		"pkglinux": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./appIcon.ico --asar --platform=linux --arch=x64",
-		"installer_win": "node installer_assets/builder windows"
-	},
-	"license": "MIT",
-	"devDependencies": {
-		"chalk": "^2.4.2",
-		"electron-packager": "^12.2.0"
-	},
-	"dependencies": {
-		"datauri": "^1.1.0",
-		"dotenv": "^6.2.0",
-		"node-fetch": "^2.3.0",
-		"request": "^2.88.0",
-		"request-promise-native": "^1.0.7"
-	}
+  "name": "premid",
+  "productName": "PreMiD",
+  "version": "2.0.0",
+  "repository": "https://github.com/Timeraa/PreMiD",
+  "scripts": {
+    "init": "npm i && cd src && npm i",
+    "start": "npm start --prefix src/.",
+    "pkgmac": "electron-packager ./src/ --out=./dist/ --asar --overwrite --icon=./installer_assets/appIcon.ico --osx-sign.identity='Florian Metz'",
+    "pkgwin": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./installer_assets/appIcon.ico",
+    "pkgwin32": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./installer_assets/appIcon.ico --platform=win32 --arch=ia32",
+    "pkglinux": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./appIcon.ico --asar --platform=linux --arch=x64",
+    "installer_win": "node installer_assets/builder windows",
+    "installer_osx": "node installer_assets/builder osx"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "chalk": "^2.4.2",
+    "electron-packager": "^12.2.0"
+  },
+  "dependencies": {
+    "datauri": "^1.1.0",
+    "dotenv": "^6.2.0",
+    "node-fetch": "^2.6.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  }
 }

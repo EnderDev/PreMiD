@@ -1,12 +1,9 @@
 var DiscordRPC = require("discord-rpc"),
-  { app, dialog } = require("electron"),
-  express = require("express");
+  { app, dialog } = require("electron");
 
 //* Create server to listen for extension
-var extension = express(),
-  http = require("http"),
-  socketServer = http.createServer(extension),
-  io = require("socket.io")(socketServer);
+var io = require("socket.io"),
+  socketServer = io.listen(3020);
 
 //* Load Config
 const Config = require("electron-store");
@@ -36,11 +33,6 @@ async function keepAliveCheck() {
   lastKeepAliveSwitch += 1;
 }
 
-//* Listen on port 3020
-socketServer.listen(3020, () => {
-  debug.success(`Listening on Port 3020`);
-});
-
 socketServer.on("error", e => {
   if (e.code == "EADDRINUSE")
     dialog.showMessageBox({
@@ -51,7 +43,7 @@ socketServer.on("error", e => {
 });
 
 //* Socket connection event
-io.on("connection", function(socket) {
+socketServer.on("connection", function(socket) {
   global.EXTENSIONSOCKET = socket;
   BROWSERCONNECTIONSTATE = "CONNECTED";
 
@@ -82,7 +74,7 @@ async function updatePresence(data) {
     data.hidden != undefined &&
     data.hidden == true
   ) {
-    setupServices.map(svice => svice.rpc.clearActivity());
+    setupServices.map(svice => svice.rpc.clearActivity().catch(() => {}));
     return;
   }
 
