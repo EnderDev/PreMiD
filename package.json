@@ -5,7 +5,8 @@
   "repository": "https://github.com/Timeraa/PreMiD",
   "scripts": {
     "init": "npm i && cd src && npm i",
-    "start": "npm start --prefix src/.",
+    "start": "electron dist/app/.",
+    "dev": "nodemon --quiet --watch . --exec 'node dev.js && electron dist/app/.' --ignore dist/",
     "pkgmac": "electron-packager ./src/ --out=./dist/ --asar --overwrite --icon=./installer_assets/appIcon.ico --osx-sign.identity='Florian Metz'",
     "pkgwin": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./installer_assets/appIcon.ico",
     "pkgwin32": "electron-packager ./src/ --out=./dist/ --overwrite --icon=./installer_assets/appIcon.ico --platform=win32 --arch=ia32",
@@ -15,14 +16,19 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/fs-extra": "^7.0.0",
+    "@types/glob": "^7.1.1",
     "chalk": "^2.4.2",
-    "electron-packager": "^12.2.0"
+    "cli-spinners": "^2.1.0",
+    "electron": "^5.0.3",
+    "electron-packager": "^12.2.0",
+    "fs-extra": "^8.0.1",
+    "glob": "^7.1.4",
+    "multispinner": "^0.2.1",
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
-    "datauri": "^1.1.0",
-    "dotenv": "^6.2.0",
-    "node-fetch": "^2.6.0",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
+    "discord-rpc": "^3.0.2",
+    "socket.io": "^2.2.0"
   }
 }

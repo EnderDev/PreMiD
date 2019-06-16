@@ -1,32 +1,24 @@
 {
-  "productVersion": "2.0",
-  "productName": "PreMiD",
   "name": "premid",
-  "description": "Discord Rich Presence for websites.",
   "version": "2.0.0",
+  "description": "Rich Presence for websites",
   "main": "index.js",
-  "author": "Timeraa",
-  "license": "MIT",
-  "homepage": "https://premid.app/",
-  "bugs": {
-    "url": "https://github.com/PreMiD/PreMiD/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PreMiD/PreMiD.git"
+    "url": "git+https://github.com/PreMiD/PreMiD.git"
   },
-  "scripts": {
-    "start": "electron ."
+  "author": "Timeraa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PreMiD/PreMiD/issues"
   },
-  "dependencies": {
-    "auto-launch": "^5.0.5",
-    "discord-rpc": "^3.0.2",
-    "electron-store": "^3.3.0",
-    "socket.io": "^2.2.0",
-    "sudo-prompt": "^8.2.5"
-  },
+  "homepage": "https://github.com/PreMiD/PreMiD#readme",
+  "productName": "PreMiD",
   "devDependencies": {
-    "chalk": "^2.4.2",
-    "electron": "5.0.3"
-  }
+    "electron": "^5.0.3"
+  },
+  "dependencies": {}
 }
