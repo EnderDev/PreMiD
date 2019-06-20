@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "noImplicitAny": true,
-    "sourceMap": true,
+    "target": "es2018",
+    "sourceMap": false,
     "baseUrl": ".",
     "outDir": "dist/app",
+    "removeComments": true,
+    "esModuleInterop": true,
     "paths": {
       "*": ["node_modules/*"]
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["dev.ts"]
+  "exclude": ["devMode.ts", "pkg.ts"]
 }

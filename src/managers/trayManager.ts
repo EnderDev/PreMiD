@@ -1,27 +1,27 @@
-import { app, Menu, Tray } from "electron";
+import { Menu, Tray } from "electron";
 import { join } from "path";
 
-let tray = null;
+export var tray: Tray;
+export var trayContextMenu = Menu.buildFromTemplate([
+  {
+    type: "separator"
+  },
+  {
+    role: "quit"
+  }
+]);
 
+/**
+ * Create tray
+ */
 export function init() {
-  return new Promise<Boolean>(function(resolve, reject) {
-    app.whenReady().then(() => {
-      tray = new Tray(join(__dirname, "../assets/tray/16x16.png"));
+  return new Promise<Tray>(function(resolve) {
+    //* Create tray
+    tray = new Tray(join(__dirname, "../assets/tray/icon.png"));
 
-      var contextMenu = Menu.buildFromTemplate([
-        {
-          label: "Check for updates"
-        },
-        {
-          type: "separator"
-        },
-        {
-          role: "quit"
-        }
-      ]);
-
-      tray.setContextMenu(contextMenu);
-      resolve();
-    });
+    //* Set its context menu
+    tray.setContextMenu(trayContextMenu);
+    //* Resolve promise
+    resolve(tray);
   });
 }
