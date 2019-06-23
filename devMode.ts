@@ -1,3 +1,5 @@
+console.clear();
+
 import { copySync, removeSync, writeFileSync } from "fs-extra";
 import { extname, basename } from "path";
 import * as glob from "fast-glob";
