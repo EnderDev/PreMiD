@@ -7,3 +7,4 @@ server
 *.exe
 *.app
 *.xml.backup
+*.js
