@@ -47,6 +47,10 @@ interface PresenceData {
    * Determines if the service should be hidden (clearActivity)
    */
   hidden: boolean;
+  /**
+   * Determines if the service is mediaKey able / uses them
+   */
+  mediaKeys: boolean;
 }
 
 //* Define Presence array
@@ -130,7 +134,8 @@ export function updatePresence(presenceData: PresenceData) {
     presenceTimeoutInterval = setInterval(presenceTimeout, 1000);
 
   //* set input bindings
-  initInputs();
+  if (presenceData.mediaKeys) initInputs();
+  else deinitInputs();
 
   //* Set Activity
   presence.rpc
