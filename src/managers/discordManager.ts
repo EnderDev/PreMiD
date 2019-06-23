@@ -101,7 +101,7 @@ function presenceTimeout() {
  * Opens rpc connection if none exists
  * Sets activity on discord
  */
-export function updatePresence(presenceData: PresenceData) {
+export async function updatePresence(presenceData: PresenceData) {
   //* If playback == true set to 0, continue
   //* Else if playBackSwitch is above limit return
   if (presenceData.playback) presencePlaybackSwitch = 0;
@@ -125,8 +125,8 @@ export function updatePresence(presenceData: PresenceData) {
 
   //* If not log it in
   if (!presence) {
-    loginPresence(presenceData.clientID);
-    return;
+    presence = await loginPresence(presenceData.clientID);
+    if (presence == null) return;
   } else if (!presence.ready) return;
 
   //* Set timeout interval if not already
@@ -170,20 +170,28 @@ export function updatePresence(presenceData: PresenceData) {
  * @param clientId client ID of presence
  */
 function loginPresence(clientId: string) {
-  var presence: Presence = {
-    id: clientId,
-    rpc: new Discord.Client({ transport: "ipc" }),
-    ready: false
-  };
+  return new Promise<Presence | null>((resolve, reject) => {
+    var presence: Presence = {
+      id: clientId,
+      rpc: new Discord.Client({ transport: "ipc" }),
+      ready: false
+    };
 
-  //* Add presence to object
-  loggedInPresences.push(presence);
+    //* Add presence to object
+    loggedInPresences.push(presence);
 
-  //* Try login with client id
-  presence.rpc.login({ clientId: clientId }).catch(destroy);
+    //* Try login with client id
+    presence.rpc.login({ clientId: clientId }).catch(() => {
+      destroy();
+      resolve();
+    });
 
-  //* Once ready change ready to true
-  presence.rpc.once("ready", () => (presence.ready = true));
+    //* Once ready change ready to true
+    presence.rpc.once("ready", () => {
+      presence.ready = true;
+      resolve(presence);
+    });
+  });
 }
 
 /**
