@@ -181,10 +181,10 @@ check_for_updates = 1
             </ruleList>
         </runProgram>
     </preUninstallationActionList>
-    <compressionAlgorithm>lzham-ultra</compressionAlgorithm>
     <defaultInstallationMode>unattended</defaultInstallationMode>
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
+    <osxPlatforms>osx-intel osx-x86_64</osxPlatforms>
     <outputDirectory>../dist/installer</outputDirectory>
     <productDisplayIcon>${installdir}/appIcon.ico</productDisplayIcon>
     <saveRelativePaths>1</saveRelativePaths>
