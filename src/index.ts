@@ -4,6 +4,7 @@ import { init as initTray } from "./managers/trayManager";
 import { update as initAutoLaunch } from "./managers/launchManager";
 import { platform } from "os";
 import inAppFolder from "./util/inAppFolder";
+import { checkForUpdate } from "./util/updateChecker";
 
 //* Set AppUserModelId for task manager etc
 app.setAppUserModelId("Timeraa.PreMiD");
@@ -35,9 +36,13 @@ app.once("ready", async () => {
   //* init application tray icon
   await initTray();
 
+  //* Check for update
+  checkForUpdate(true);
+  setInterval(checkForUpdate, 15 * 1000 * 60);
+
   //* Hide app icon if Mac OS
   if (platform() === "darwin") app.dock.hide();
 });
 
-//* If second instance started, close it
-if (!app.requestSingleInstanceLock()) app.quit();
+//* If second instance started, close old one
+app.on("second-instance", app.quit);

@@ -1,24 +1,78 @@
-import { execSync } from "child_process";
-import { app, MenuItem } from "electron";
-import { resolve, join } from "path";
+import { spawn } from "child_process";
+import { resolve as pResolve } from "path";
+import { error } from "./debug";
+import { trayContextMenu } from "../managers/trayManager";
+import { MenuItem, app } from "electron";
+import { tray } from "../managers/trayManager";
+import { platform } from "os";
+var sudoPrompt = require("sudo-prompt");
 
-import sudo = require("sudo-prompt");
-import { tray, trayContextMenu } from "../managers/trayManager";
+var updaterPath: string;
 
-export function check() {
-  /*sudo.exec(
-    "./updater.app/Contents/MacOS/osx-intel",
+export async function checkForUpdate(autoUpdate = false) {
+  switch (platform()) {
+    case "darwin":
+      updaterPath = app.isPackaged
+        ? pResolve(
+            "/Applications/PreMiD/updater.app/Contents/MacOS/installbuilder.sh"
+          )
+        : pResolve("./updater.app/Contents/MacOS/installbuilder.sh");
+      break;
+    case "win32":
+      updaterPath = pResolve("./updater.exe");
+      break;
+  }
+
+  var child = spawn(updaterPath, ["--mode", "unattended"]);
+
+  child.on("exit", code => {
+    if (code === 127) {
+      error("Updater file not found");
+      return;
+    }
+
+    //* If no update return
+    if (code === 1) return;
+
+    //* If autoUpdate == true
+    if (autoUpdate) {
+      update();
+      return;
+    }
+
+    if (trayContextMenu.items.length < 3) {
+      trayContextMenu.insert(
+        0,
+        new MenuItem({
+          label: "Update available!",
+          click() {
+            update();
+          }
+        })
+      );
+
+      trayContextMenu.insert(
+        1,
+        new MenuItem({
+          type: "separator"
+        })
+      );
+      tray.setContextMenu(trayContextMenu);
+    }
+  });
+}
+
+export function update() {
+  sudoPrompt.exec(
+    `${updaterPath} --mode unattended --unattendedmodebehavior download`,
     {
-      name: "PreMiD",
-      stdio: "inherit",
-      cwd: `${join(__dirname, "../")}`
+      name: app.getName()
     },
-    function(error, stdout, stderr) {
-      console.log(error, stdout, stderr);
+    (error, stdout, stderr) => {
+      if (error) {
+        checkForUpdate();
+        return;
+      }
     }
   );
-  var res = execSync("./updater.app -h", {
-    stdio: "inherit",
-    cwd: `${join(__dirname, "../")}`
-  });*/
 }

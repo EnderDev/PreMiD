@@ -4,9 +4,6 @@ import { join } from "path";
 export var tray: Tray;
 export var trayContextMenu = Menu.buildFromTemplate([
   {
-    type: "separator"
-  },
-  {
     role: "quit"
   }
 ]);
