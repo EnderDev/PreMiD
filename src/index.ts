@@ -6,6 +6,8 @@ import { platform } from "os";
 import inAppFolder from "./util/inAppFolder";
 import { checkForUpdate } from "./util/updateChecker";
 
+export var updateCheckerInterval = null;
+
 //* Set AppUserModelId for task manager etc
 app.setAppUserModelId("Timeraa.PreMiD");
 
@@ -38,7 +40,7 @@ app.once("ready", async () => {
 
   //* Check for update
   checkForUpdate(true);
-  setInterval(checkForUpdate, 15 * 1000 * 60);
+  updateCheckerInterval = setInterval(checkForUpdate, 15 * 1000 * 60);
 
   //* Hide app icon if Mac OS
   if (platform() === "darwin") app.dock.hide();

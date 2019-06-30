@@ -5,6 +5,7 @@ import { trayContextMenu } from "../managers/trayManager";
 import { MenuItem, app } from "electron";
 import { tray } from "../managers/trayManager";
 import { platform } from "os";
+import { updateCheckerInterval } from "../index";
 var sudoPrompt = require("sudo-prompt");
 
 var updaterPath: string;
@@ -25,12 +26,16 @@ export async function checkForUpdate(autoUpdate = false) {
 
   var child = spawn(updaterPath, ["--mode", "unattended"]);
 
-  child.on("exit", code => {
-    if (code === 127) {
-      error("Updater file not found");
+  child.on("error", err => {
+    // @ts-ignore
+    if (err.code === "ENOENT") {
+      error("Updater file not found.");
+      clearInterval(updateCheckerInterval);
       return;
     }
+  });
 
+  child.on("exit", code => {
     //* If no update return
     if (code === 1) return;
 
