@@ -1,4 +1,4 @@
-import { app, systemPreferences } from "electron";
+import { app, systemPreferences, dialog } from "electron";
 import { init as initSocket } from "./managers/socketManager";
 import { init as initTray } from "./managers/trayManager";
 import { update as initAutoLaunch } from "./managers/launchManager";
@@ -48,3 +48,9 @@ app.once("ready", async () => {
 
 //* If second instance started, close old one
 app.on("second-instance", app.quit);
+
+process.on("uncaughtException", err => {
+  if (platform() === "darwin") app.dock.show();
+  app.focus();
+  dialog.showErrorBox(err.name, err.stack);
+});
