@@ -10,6 +10,7 @@ import {
 } from "./discordManager";
 import { deinit as deinitInputs } from "./inputManager";
 import { update as updateSettings } from "./settingsManager";
+import { openFileDialog } from "./presenceDevManager";
 
 export var io: socketIo.Server;
 export var socket: socketIo.Socket;
@@ -61,6 +62,9 @@ function socketConnection(cSocket: socketIo.Socket) {
 
   //* Handle settingsUpdate
   socket.on("optionUpdate", updateSettings);
+
+  //* Handle presenceDev
+  socket.on("watchPresenceFolder", openFileDialog);
 
   socket.once("disconnect", () => {
     //* Clear retryDiscordClient interval
